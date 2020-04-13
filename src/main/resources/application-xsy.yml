@@ -1,0 +1,13 @@
+#server
+server:
+  port: 8888
+
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://rm-uf6mmio3c34252299go.mysql.rds.aliyuncs.com/xbtest?serverTimezone=Asia/Shanghai
+    username: xbtest
+    password: Xbtest123456
+    driver-class-name: com.alibaba.druid.proxy.DruidDriver
+    name: xiaoBlog

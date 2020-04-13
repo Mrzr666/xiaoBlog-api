@@ -13,4 +13,7 @@ import com.xblog.modules.user.entity.User;
  */
 public interface UserService extends IService<User> {
 
+    //根据用户名查找用户
+    User queryUserByAccount(String account);
+
 }

@@ -1,11 +1,15 @@
 package com.xblog.service;
 
 import com.xblog.BlogApiApplicationTests;
+import com.xblog.modules.user.entity.User;
+import com.xblog.modules.user.service.UserService;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserServiceTest extends BlogApiApplicationTests{
 //
-//	@Autowired
-//	private UserService userService;
+	@Autowired
+	private UserService userService;
 //
 //
 /*	List<User> findAll();
@@ -20,20 +24,11 @@ public class UserServiceTest extends BlogApiApplicationTests{
 
 	void deleteUserById(Long id);*/
 //
-//	@Test
-//	public void saveUserTest() {
-//		User u = new User();
-//		u.setAccount("shimh");
-//		u.setNickname("史明辉");
-//		u.setPassword("123456");
-//		u.setAdmin(false);
-//		u.setCreateDate(new Date());
-//		u.setEmail("919431514@qq.com");
-//		u.setMobilePhoneNumber("18396816462");
-//		u.setStatus(UserStatus.normal);
-//		Long id = userService.saveUser(u);
-//		System.out.println(id);
-//	}
+	@Test
+	public void saveUserTest() {
+		User user = userService.queryUserByAccount("xsy");
+		System.out.println(user);
+	}
 //
 //	@Test
 //	public void getUserById() {

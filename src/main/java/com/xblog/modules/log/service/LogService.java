@@ -13,4 +13,7 @@ import com.xblog.modules.log.entity.Log;
  */
 public interface LogService extends IService<Log> {
 
+    //保存日志
+    Integer saveLog(Log log);
+
 }

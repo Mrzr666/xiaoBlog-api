@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -29,7 +30,7 @@ public class Log implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private LocalDateTime createDate;
+    private Date createdDate;
 
     private String ip;
 

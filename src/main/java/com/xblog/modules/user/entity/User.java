@@ -37,7 +37,7 @@ public class User implements Serializable {
     /**
      * 是否是管理员
      */
-    private String isAdmin;
+    private Boolean isAdmin;
 
     /**
      * 头像
@@ -66,7 +66,7 @@ public class User implements Serializable {
     /**
      * 删除标记
      */
-    private String deleted;
+    private Boolean deleted;
 
 
 }
