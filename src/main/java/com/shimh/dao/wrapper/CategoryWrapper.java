@@ -1,4 +1,4 @@
-package com.shimh.repository.wrapper;
+package com.shimh.dao.wrapper;
 
 import java.util.List;
 

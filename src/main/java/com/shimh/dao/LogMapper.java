@@ -1,4 +1,4 @@
-package com.shimh.repository;
+package com.shimh.dao;
 
 import com.shimh.entity.Log;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * <p>
  * 2018年4月18日
  */
-public interface LogRepository extends JpaRepository<Log, Integer> {
+public interface LogMapper extends JpaRepository<Log, Integer> {
 }

@@ -1,11 +1,9 @@
 package com.shimh.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.shimh.entity.User;
-import com.shimh.repository.UserRepository;
+import com.shimh.dao.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.shimh.common.util.UserUtils;
 import com.shimh.entity.Article;
 import com.shimh.entity.Comment;
-import com.shimh.repository.ArticleRepository;
-import com.shimh.repository.CommentRepository;
+import com.shimh.dao.ArticleMapper;
+import com.shimh.dao.CommentMapper;
 import com.shimh.service.CommentService;
 
 /**
@@ -26,44 +24,44 @@ import com.shimh.service.CommentService;
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleMapper articleMapper;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserMapper userMapper;
 
 
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentMapper commentMapper;
 
     @Override
     public List<Comment> findAll() {
-        return commentRepository.findAll();
+        return commentMapper.findAll();
     }
 
     @Override
     public Comment getCommentById(Integer id) {
-        return commentRepository.getOne(id);
+        return commentMapper.getOne(id);
     }
 
     @Override
     @Transactional
     public Integer saveComment(Comment comment) {
 
-        return commentRepository.save(comment).getId();
+        return commentMapper.save(comment).getId();
     }
 
 
     @Override
     @Transactional
     public void deleteCommentById(Integer id) {
-        commentRepository.delete(id);
+        commentMapper.delete(id);
     }
 
     @Override
     public List<Comment> listCommentsByArticle(Integer id) {
         Article a = new Article();
         a.setId(id);
-        return commentRepository.findByArticleAndLevelOrderByCreateDateDesc(a, "0");
+        return commentMapper.findByArticleAndLevelOrderByCreateDateDesc(a, "0");
     }
 
     @Override
@@ -71,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment saveCommentAndChangeCounts(Comment comment) {
 
         int count = 1;
-        Article a = articleRepository.findOne(comment.getArticle().getId());
+        Article a = articleMapper.findOne(comment.getArticle().getId());
         a.setCommentCounts(a.getCommentCounts() + count);
 
         comment.setAuthor(UserUtils.getCurrentUser());
@@ -88,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        return commentRepository.save(comment);
+        return commentMapper.save(comment);
 
     }
 
@@ -96,12 +94,12 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteCommentByIdAndChangeCounts(Integer id) {
         int count = 1;
-        Comment c = commentRepository.findOne(id);
+        Comment c = commentMapper.findOne(id);
         Article a = c.getArticle();
 
         a.setCommentCounts(a.getCommentCounts() - count);
 
-        commentRepository.delete(c);
+        commentMapper.delete(c);
     }
 
 

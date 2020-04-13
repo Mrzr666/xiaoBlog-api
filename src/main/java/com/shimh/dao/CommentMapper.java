@@ -1,4 +1,4 @@
-package com.shimh.repository;
+package com.shimh.dao;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import com.shimh.entity.Comment;
  * <p>
  * 2018年1月25日
  */
-public interface CommentRepository extends JpaRepository<Comment, Integer> {
+public interface CommentMapper extends JpaRepository<Comment, Integer> {
 
     List<Comment> findByArticleAndLevelOrderByCreateDateDesc(Article a, String level);
 

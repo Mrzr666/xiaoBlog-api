@@ -3,13 +3,13 @@ package com.shimh.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.shimh.vo.ArticleVo;
 import com.shimh.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import com.shimh.entity.Article;
 import com.shimh.entity.Category;
 import com.shimh.entity.Tag;
 import com.shimh.entity.User;
-import com.shimh.repository.ArticleRepository;
+import com.shimh.dao.ArticleMapper;
 import com.shimh.service.ArticleService;
 
 /**
@@ -30,29 +30,89 @@ import com.shimh.service.ArticleService;
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleMapper articleMapper;
 
-
-    @Override
-    public List<Article> listArticles(PageVo page) {
-
-        return articleRepository.listArticles(page);
-    }
 
     @Override
     public List<Article> listArticles(ArticleVo article, PageVo page) {
+        LambdaQueryWrapper<Article> wrapper = Wrappers.lambdaQuery();
 
-        return articleRepository.listArticles(article, page);
+//        StringBuilder hql = new StringBuilder("from Article a ");
+
+        if (null != article.getTagId()) {
+            wrapper
+            hql.append(" inner join fetch a.tags t");
+        }
+
+        hql.append(" where 1=1 ");
+
+        if (null != article.getCategoryId()) {
+
+            hql.append(" and a.category.id = :categoryId");
+        }
+
+        if (null != article.getTagId()) {
+
+            hql.append(" and t.id = :tagId");
+        }
+
+
+        if (null != article.getYear() && !"".equals(article.getYear())) {
+            hql.append(" and YEAR(a.createDate) = :year");
+        }
+
+        if (null != article.getMonth() && !"".equals(article.getMonth())) {
+            hql.append(" and MONTH(a.createDate) = :month");
+        }
+
+        if (null != page.getName() && !"".equals(page.getName())) {
+            hql.append(" order by ");
+            hql.append(page.getName());
+        }
+
+        if (null != page.getSort() && !"".equals(page.getSort())) {
+            hql.append(" ");
+            hql.append(page.getSort());
+        }
+
+
+        Query query = getSession().createQuery(hql.toString());
+
+
+        if (null != article.getYear() && !"".equals(article.getYear())) {
+            query.setParameter("year", article.getYear());
+        }
+
+        if (null != article.getMonth() && !"".equals(article.getMonth())) {
+            query.setParameter("month", article.getMonth());
+        }
+
+        if (null != article.getTagId()) {
+            query.setParameter("tagId", article.getTagId());
+        }
+
+        if (null != article.getCategoryId()) {
+            query.setParameter("categoryId", article.getCategoryId());
+        }
+
+        if (null != page.getPageNumber() && null != page.getPageSize()) {
+            query.setFirstResult(page.getPageSize() * (page.getPageNumber() - 1));
+            query.setMaxResults(page.getPageSize());
+        }
+
+        return query.list();
+
+        return articleMapper.listArticles(article, page);
     }
 
     @Override
     public List<Article> findAll() {
-        return articleRepository.findAll();
+        return articleMapper.findAll();
     }
 
     @Override
     public Article getArticleById(Integer id) {
-        return articleRepository.getOne(id);
+        return articleMapper.getOne(id);
     }
 
     @Override
@@ -80,13 +140,13 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCreateDate(new Date());
         article.setWeight(Article.Article_Common);
 
-        return articleRepository.save(article).getId();
+        return articleMapper.save(article).getId();
     }
 
     @Override
     @Transactional
     public Integer updateArticle(Article article) {
-        Article oldArticle = articleRepository.getOne(article.getId());
+        Article oldArticle = articleMapper.getOne(article.getId());
 
         oldArticle.setTitle(article.getTitle());
         oldArticle.setSummary(article.getSummary());
@@ -100,14 +160,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void deleteArticleById(Integer id) {
-        articleRepository.delete(id);
+        articleMapper.delete(id);
     }
 
     @Override
     public List<Article> listArticlesByTag(Integer id) {
         Tag t = new Tag();
         t.setId(id);
-        return articleRepository.findByTags(t);
+        return articleMapper.findByTags(t);
     }
 
     @Override
@@ -115,14 +175,14 @@ public class ArticleServiceImpl implements ArticleService {
         Category c = new Category();
         c.setId(id);
 
-        return articleRepository.findByCategory(c);
+        return articleMapper.findByCategory(c);
     }
 
     @Override
     @Transactional
     public Article getArticleAndAddViews(Integer id) {
         int count = 1;
-        Article article = articleRepository.getOne(id);
+        Article article = articleMapper.getOne(id);
         article.setViewCounts(article.getViewCounts() + count);
         return article;
     }
@@ -130,18 +190,18 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> listHotArticles(int limit) {
 
-        return articleRepository.findOrderByViewsAndLimit(limit);
+        return articleMapper.findOrderByViewsAndLimit(limit);
     }
 
     @Override
     public List<Article> listNewArticles(int limit) {
 
-        return articleRepository.findOrderByCreateDateAndLimit(limit);
+        return articleMapper.findOrderByCreateDateAndLimit(limit);
     }
 
     @Override
     public List<ArticleVo> listArchives() {
 
-        return articleRepository.listArchives();
+        return articleMapper.listArchives();
     }
 }

@@ -1,17 +1,6 @@
 package com.shimh.service;
 
-import java.util.List;
-
-import com.shimh.repository.ArticleRepository;
-import com.shimh.vo.ArticleVo;
-import com.shimh.vo.PageVo;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.shimh.BlogApiApplicationTests;
-import com.shimh.entity.Article;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 public class ArticleServiceTest extends BlogApiApplicationTests{
 

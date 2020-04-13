@@ -1,4 +1,4 @@
-package com.shimh.repository.impl;
+package com.shimh.dao.impl;
 
 import java.util.List;
 
@@ -9,10 +9,8 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.IntegerType;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.shimh.repository.wrapper.CategoryWrapper;
-import com.shimh.repository.wrapper.TagWrapper;
+import com.shimh.dao.wrapper.TagWrapper;
 import com.shimh.vo.TagVO;
 
 /**

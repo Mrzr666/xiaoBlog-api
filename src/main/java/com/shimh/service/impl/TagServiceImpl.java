@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shimh.entity.Tag;
-import com.shimh.repository.TagRepository;
+import com.shimh.dao.TagMapper;
 import com.shimh.service.TagService;
 import com.shimh.vo.TagVO;
 
@@ -20,30 +20,30 @@ import com.shimh.vo.TagVO;
 public class TagServiceImpl implements TagService {
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagMapper tagMapper;
 
 
     @Override
     public List<Tag> findAll() {
-        return tagRepository.findAll();
+        return tagMapper.findAll();
     }
 
     @Override
     public Tag getTagById(Integer id) {
-        return tagRepository.getOne(id);
+        return tagMapper.getOne(id);
     }
 
     @Override
     @Transactional
     public Integer saveTag(Tag tag) {
 
-        return tagRepository.save(tag).getId();
+        return tagMapper.save(tag).getId();
     }
 
     @Override
     @Transactional
     public Integer updateTag(Tag tag) {
-        Tag oldTag = tagRepository.getOne(tag.getId());
+        Tag oldTag = tagMapper.getOne(tag.getId());
 
         oldTag.setTagname(tag.getTagname());
         oldTag.setAvatar(tag.getAvatar());
@@ -54,22 +54,22 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public void deleteTagById(Integer id) {
-        tagRepository.delete(id);
+        tagMapper.delete(id);
     }
 
     @Override
     public List<Tag> listHotTags(int limit) {
 
-        return tagRepository.listHotTagsByArticleUse(limit);
+        return tagMapper.listHotTagsByArticleUse(limit);
     }
 
     @Override
     public List<TagVO> findAllDetail() {
-        return tagRepository.findAllDetail();
+        return tagMapper.findAllDetail();
     }
 
     @Override
     public TagVO getTagDetail(Integer tagId) {
-        return tagRepository.getTagDetail(tagId);
+        return tagMapper.getTagDetail(tagId);
     }
 }

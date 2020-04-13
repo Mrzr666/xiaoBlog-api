@@ -14,8 +14,6 @@ import com.shimh.vo.PageVo;
  */
 public interface ArticleService {
 
-    List<Article> listArticles(PageVo page);
-
     List<Article> listArticles(ArticleVo article, PageVo page);
 
     List<Article> findAll();

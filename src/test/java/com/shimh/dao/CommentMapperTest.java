@@ -1,13 +1,8 @@
 package com.shimh.dao;
 
 import com.shimh.BlogApiApplicationTests;
-import com.shimh.entity.Comment;
-import com.shimh.repository.CommentRepository;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-public class CommentRepositoryTest extends BlogApiApplicationTests {
+public class CommentMapperTest extends BlogApiApplicationTests {
 
 //    @Autowired
 //    private CommentRepository commentRepository;

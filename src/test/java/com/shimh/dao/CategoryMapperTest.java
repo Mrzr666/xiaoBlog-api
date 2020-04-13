@@ -4,13 +4,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.shimh.BlogApiApplicationTests;
-import com.shimh.entity.Category;
-import com.shimh.repository.CategoryRepository;
 
-public class CategoryRepositoryTest extends BlogApiApplicationTests{
+public class CategoryMapperTest extends BlogApiApplicationTests{
 
 	@Autowired
-	private CategoryRepository	categoryRepository;
+	private CategoryMapper categoryMapper;
 
 	@Test
 	public void test() {

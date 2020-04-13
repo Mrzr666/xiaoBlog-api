@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shimh.entity.Category;
-import com.shimh.repository.CategoryRepository;
+import com.shimh.dao.CategoryMapper;
 import com.shimh.service.CategoryService;
 import com.shimh.vo.CategoryVO;
 
@@ -20,30 +20,30 @@ import com.shimh.vo.CategoryVO;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryMapper categoryMapper;
 
 
     @Override
     public List<Category> findAll() {
-        return categoryRepository.findAll();
+        return categoryMapper.findAll();
     }
 
     @Override
     public Category getCategoryById(Integer id) {
-        return categoryRepository.getOne(id);
+        return categoryMapper.getOne(id);
     }
 
     @Override
     @Transactional
     public Integer saveCategory(Category category) {
 
-        return categoryRepository.save(category).getId();
+        return categoryMapper.save(category).getId();
     }
 
     @Override
     @Transactional
     public Integer updateCategory(Category category) {
-        Category oldCategory = categoryRepository.getOne(category.getId());
+        Category oldCategory = categoryMapper.getOne(category.getId());
 
         oldCategory.setCategoryname(category.getCategoryname());
         oldCategory.setAvatar(category.getAvatar());
@@ -55,17 +55,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategoryById(Integer id) {
-        categoryRepository.delete(id);
+        categoryMapper.delete(id);
     }
 
     @Override
     public List<CategoryVO> findAllDetail() {
-        return categoryRepository.findAllDetail();
+        return categoryMapper.findAllDetail();
     }
 
     @Override
     public CategoryVO getCategoryDetail(Integer categoryId) {
-        return categoryRepository.getCategoryDetail(categoryId);
+        return categoryMapper.getCategoryDetail(categoryId);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.shimh.repository.wrapper;
+package com.shimh.dao.wrapper;
 
 import com.shimh.entity.Article;
 import com.shimh.vo.ArticleVo;

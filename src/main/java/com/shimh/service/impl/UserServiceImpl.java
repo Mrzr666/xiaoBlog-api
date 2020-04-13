@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shimh.common.util.PasswordHelper;
 import com.shimh.entity.User;
-import com.shimh.repository.UserRepository;
+import com.shimh.dao.UserMapper;
 import com.shimh.service.UserService;
 
 /**
@@ -22,22 +21,22 @@ import com.shimh.service.UserService;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userMapper.findAll();
     }
 
     @Override
     public User getUserByAccount(String account) {
-        return userRepository.findByAccount(account);
+        return userMapper.findByAccount(account);
     }
 
     @Override
     public User getUserById(Long id) {
 
-        return userRepository.findOne(id);
+        return userMapper.findOne(id);
     }
 
     @Override
@@ -49,14 +48,14 @@ public class UserServiceImpl implements UserService {
         String avatar = "/static/user/user_" + index + ".png";
 
         user.setAvatar(avatar);
-        return userRepository.save(user).getId();
+        return userMapper.save(user).getId();
     }
 
 
     @Override
     @Transactional
     public Long updateUser(User user) {
-        User oldUser = userRepository.findOne(user.getId());
+        User oldUser = userMapper.findOne(user.getId());
         oldUser.setNickname(user.getNickname());
 
         return oldUser.getId();
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-        userRepository.delete(id);
+        userMapper.delete(id);
     }
 
 }
