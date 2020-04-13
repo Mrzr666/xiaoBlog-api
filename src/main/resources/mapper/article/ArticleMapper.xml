@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xblog.article.mapper.ArticleMapper">
+<mapper namespace="com.xblog.modules.article.mapper.ArticleMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xblog.modules.article.entity.Article">
-        <id column="id" property="id" />
-        <result column="title" property="title" />
-        <result column="summary" property="summary" />
-        <result column="comment_counts" property="commentCounts" />
-        <result column="view_counts" property="viewCounts" />
-        <result column="weight" property="weight" />
-        <result column="author_id" property="authorId" />
-        <result column="body_id" property="bodyId" />
-        <result column="category_id" property="categoryId" />
-        <result column="created_date" property="createdDate" />
-        <result column="deleted" property="deleted" />
-    </resultMap>
+    <!--&lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
+    <!--<resultMap id="BaseResultMap" type="com.xblog.modules.article.entity.Article">-->
+        <!--<id column="id" property="id" />-->
+        <!--<result column="title" property="title" />-->
+        <!--<result column="summary" property="summary" />-->
+        <!--<result column="comment_counts" property="commentCounts" />-->
+        <!--<result column="view_counts" property="viewCounts" />-->
+        <!--<result column="weight" property="weight" />-->
+        <!--<result column="author_id" property="authorId" />-->
+        <!--<result column="body_id" property="bodyId" />-->
+        <!--<result column="category_id" property="categoryId" />-->
+        <!--<result column="created_date" property="createdDate" />-->
+        <!--<result column="deleted" property="deleted" />-->
+    <!--</resultMap>-->
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">

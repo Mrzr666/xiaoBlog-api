@@ -39,7 +39,7 @@ public class FilterConfig {
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig()); // 4  
+        source.registerCorsConfiguration("/**", buildConfig()); // 4
         return new CorsFilter(source);
     }
 

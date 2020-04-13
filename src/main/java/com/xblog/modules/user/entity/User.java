@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     private String password;
 
@@ -61,7 +62,7 @@ public class User implements Serializable {
 
     private String status;
 
-    private LocalDateTime lastLogin;
+    private Date lastLogin;
 
     /**
      * 删除标记

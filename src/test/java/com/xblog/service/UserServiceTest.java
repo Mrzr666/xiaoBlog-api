@@ -29,6 +29,10 @@ public class UserServiceTest extends BlogApiApplicationTests{
 		User user = userService.queryUserByAccount("xsy");
 		System.out.println(user);
 	}
+
+
+
+
 //
 //	@Test
 //	public void getUserById() {

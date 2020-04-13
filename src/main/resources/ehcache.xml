@@ -3,10 +3,10 @@
          xsi:noNamespaceSchemaLocation="ehcache.xsd"
          updateCheck="false" monitoring="autodetect"
          dynamicConfig="true" >
-         
-         
+
+
     <diskStore path="java.io.tmpdir/me-cache"/>
-    
+
     <!-- 默认配置-->
     <defaultCache
     	   maxElementsInMemory="50000"
@@ -20,7 +20,7 @@
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
     </defaultCache>
-    
+
      <cache name="base-data"
         maxEntriesLocalHeap="10000"
         overflowToDisk="false"
@@ -29,5 +29,5 @@
         timeToLiveSeconds="0"
         timeToIdleSeconds="0"
         statistics="true"/>
-    
+
 </ehcache>

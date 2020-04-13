@@ -23,8 +23,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User queryUserByAccount(String account) {
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(User::getUserName,"user_name");
-        User user = baseMapper.selectOne(wrapper);
+        wrapper.eq(User::getUserName,account);
+        User user = getBaseMapper().selectOne(wrapper);
         return user;
     }
 }
