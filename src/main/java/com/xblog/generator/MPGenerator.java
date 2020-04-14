@@ -36,9 +36,9 @@ public class MPGenerator {
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUrl("jdbc:mysql://139.196.12.156:3306/xiaoBlog?characterEncoding=utf8&useSSL=false");
-        dsc.setUsername("xsyroot");
-        dsc.setPassword("123456");
+        dsc.setUrl("jdbc:mysql://rm-uf6mmio3c34252299go.mysql.rds.aliyuncs.com/xbtest?serverTimezone=Asia/Shanghai");
+        dsc.setUsername("xbtest");
+        dsc.setPassword("Xbtest123456");
         mpg.setDataSource(dsc);
         //策略配置
         StrategyConfig sc = new StrategyConfig();
@@ -46,11 +46,11 @@ public class MPGenerator {
         sc.setNaming(NamingStrategy.underline_to_camel); //表名生成策略
         sc.setEntityBuilderModel(true);
         sc.setEntityLombokModel(true);
-        sc.setInclude("me_user");
+        sc.setInclude("me_config");
         mpg.setStrategy(sc);
         //包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.xblog.user");
+        pc.setParent("com.xblog.common.sysconfig");
         pc.setEntity("entity");
         pc.setController("controller");
         pc.setService("service");
