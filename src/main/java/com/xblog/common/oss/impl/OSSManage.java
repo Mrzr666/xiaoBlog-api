@@ -11,10 +11,12 @@ import com.xblog.common.sysconfig.mapper.ConfigMapper;
 import com.xblog.common.sysconfig.service.ConfigService;
 import com.xblog.modules.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 
-public class OSSManage extends ServiceImpl<ConfigMapper, Config> implements OSSInterface {
+@Service
+public class OSSManage implements OSSInterface {
 
     @Autowired
     private ConfigService configService;
