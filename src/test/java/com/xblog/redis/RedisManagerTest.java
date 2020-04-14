@@ -1,7 +1,7 @@
 package com.xblog.redis;
 
 import com.xblog.BlogApiApplicationTests;
-import com.xblog.common.cache.RedisManager;
+import com.xblog.common.util.RedisUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 public class RedisManagerTest extends BlogApiApplicationTests{
 //
 	@Resource
-	private RedisManager redisManager;
+	private RedisUtils redisManager;
 //
 //
 	@Test

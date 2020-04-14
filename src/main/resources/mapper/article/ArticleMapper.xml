@@ -2,6 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xblog.modules.article.mapper.ArticleMapper">
 
+    <!-- 使用resultMap标签定义结果映射，即将id为"rm_Order"的查询结果和我们自定义的类做一个关联关系，否则直接拿查询出来的结果字段和我们自定义的字段是对应不上的！-->
+         <resultMap id="articlePageResponse" type="com.xblog.modules.article.response.ArticlePageResponse">
+             <!--将查询结果“oid”字段对应为我们自定义别名类“_Order”的“id"字段-->
+             <id column="id" property="id" />
+             <result column="title" property="title"/>
+             <result column="summary" property="summary"/>
+             <result column="comment_counts" property="commentCounts"/>
+             <result column="view_counts" property="viewCounts"/>
+             <result column="weight" property="weight"/>
+             <result column="author_id" property="authorId"/>
+             <result column="body_id" property="bodyId"/>
+             <result column="category_id" property="categoryId"/>
+             <result column="created_date" property="createdDate"/>
+             <result column="deleted" property="deleted"/>
+             <result column="year" property="year"/>
+             <result column="month" property="month"/>
+             <!-- 多对一关联关系 -->
+             <!-- 使用association这个标签可以建立关联属性， property表示"_Order"的属性，column是通过上面定义的"ocid"别名来查询的，而javaType表示指定"customer"岁对应的属性为"_Customer" -->
+             <collection  property="tags" column="id" ofType="com.xblog.modules.tag.entity.Tag">
+                <!--下面就是具体的对应关系。-->
+                 <id column="tag_id" property="id" />
+                 <result column="avatar" property="avatar" />
+                 <result column="tag_name" property="tagName" />
+                 <result column="tag_deleted" property="deleted" />
+             </collection>
+         </resultMap>
+
     <!--&lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
     <!--<resultMap id="BaseResultMap" type="com.xblog.modules.article.entity.Article">-->
         <!--<id column="id" property="id" />-->
@@ -21,5 +48,21 @@
     <sql id="Base_Column_List">
         id, title, summary, comment_counts, view_counts, weight, author_id, body_id, category_id, created_date, deleted
     </sql>
+    <select id="queryArticlesList" resultMap="articlePageResponse" >
+        SELECT DISTINCT
+            year(ma.created_date) year,
+            month(ma.created_date) month,
+            mt.id tag_id,
+            mt.avatar,
+            mt.tag_name,
+            mt.deleted tag_deleted,
+            ma.*
+        FROM
+            me_article ma
+            LEFT JOIN me_article_tag mat ON ma.id = mat.article_id
+            LEFT JOIN me_tag mt ON mat.tag_id = mt.id
+        where
+            ma.deleted != '1' and mat.deleted != '1' and mt.deleted != '1'
+    </select>
 
 </mapper>

@@ -70,4 +70,6 @@ public class User implements Serializable {
     private Boolean deleted;
 
 
+    public void setAccount(String a) {
+    }
 }

@@ -1,5 +1,10 @@
 package com.xblog.result;
 
+import com.alibaba.fastjson.JSON;
+import com.xblog.common.result.Result;
+import com.xblog.modules.user.entity.User;
+import org.junit.Test;
+
 public class ResultTest {
 	
 //
@@ -13,17 +18,17 @@ public class ResultTest {
 //
 //	}
 //
-//	@Test
-//	public void entityTest() {
-//		User u = new User();
-//
-//		u.setId(1L);
-//		u.setAccount("a");
-//
-//		Result s = Result.success(u);
-//		String ss = JSON.toJSONString(s);
-//		System.out.println(ss);
-//	}
+	@Test
+	public void entityTest() {
+		User u = new User();
+
+		u.setId(1L);
+		u.setAccount("a");
+
+		Result s = Result.success(u);
+		String ss = JSON.toJSONString(s);
+		System.out.println(ss);
+	}
 //
 //	@Test
 //	public void ListTest() {
