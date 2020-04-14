@@ -26,7 +26,7 @@ public class UserServiceTest extends BlogApiApplicationTests{
 //
 	@Test
 	public void saveUserTest() {
-		User user = userService.queryUserByAccount("xsy");
+		User user = userService.queryUserByAccount("zr");
 		System.out.println(user);
 	}
 

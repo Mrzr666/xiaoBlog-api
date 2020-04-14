@@ -5,6 +5,8 @@ server:
 
 #upload
 spring:
+  profiles:
+    active: zr
   http:
     multipart:
       maxFileSize: 20Mb
