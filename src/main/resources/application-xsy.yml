@@ -10,7 +10,7 @@ spring:
     username: xbtest
     password: Xbtest123456
     type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
     redis:
       # Redis数据库索引（默认为0）

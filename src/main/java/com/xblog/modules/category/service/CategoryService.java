@@ -1,6 +1,7 @@
 package com.xblog.modules.category.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xblog.common.result.Result;
 import com.xblog.modules.category.entity.Category;
 
 /**
@@ -12,5 +13,6 @@ import com.xblog.modules.category.entity.Category;
  * @since 2020-04-13
  */
 public interface CategoryService extends IService<Category> {
+    Result queryCategoryList();
 
 }
