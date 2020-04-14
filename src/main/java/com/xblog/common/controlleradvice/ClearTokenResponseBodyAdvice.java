@@ -3,6 +3,7 @@ package com.xblog.common.controlleradvice;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xblog.common.util.RedisUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -12,7 +13,6 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import com.xblog.common.cache.RedisManager;
 import com.xblog.common.result.Result;
 import com.xblog.oauth.OAuthSessionManager;
 
@@ -21,7 +21,7 @@ import com.xblog.oauth.OAuthSessionManager;
 public class ClearTokenResponseBodyAdvice implements ResponseBodyAdvice {
 
     //@Autowired
-    private RedisManager redisManager;
+    private RedisUtils redisManager;
 
 
     @Override
@@ -40,7 +40,7 @@ public class ClearTokenResponseBodyAdvice implements ResponseBodyAdvice {
         HttpServletResponse httpResponse = ((ServletServerHttpResponse) response).getServletResponse();
 
         if (null != token) {
-            Session s = redisManager.get(token, Session.class);
+            Session s = (Session) redisManager.get(token);
 
             if (null == s || null == s.getId()) {
                 httpResponse.setHeader("SESSION_TIME_OUT", "timeout");
@@ -52,11 +52,11 @@ public class ClearTokenResponseBodyAdvice implements ResponseBodyAdvice {
     }
 
 
-    public RedisManager getRedisManager() {
+    public RedisUtils getRedisManager() {
         return redisManager;
     }
 
-    public void setRedisManager(RedisManager redisManager) {
+    public void setRedisManager(RedisUtils redisManager) {
         this.redisManager = redisManager;
     }
 

@@ -3,11 +3,11 @@ package com.xblog.common.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xblog.common.util.RedisUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.xblog.common.cache.RedisManager;
 import com.xblog.oauth.OAuthSessionManager;
 
 /**
@@ -23,7 +23,7 @@ public class ClearTokenInteceptor extends HandlerInterceptorAdapter {
     private static final String SESSION_TIME_OUT_V = "timeout";
 
     @Autowired
-    private RedisManager redisManager;
+    private RedisUtils redisManager;
 
 
     @Override
@@ -33,7 +33,7 @@ public class ClearTokenInteceptor extends HandlerInterceptorAdapter {
         String token = request.getHeader(OAuthSessionManager.OAUTH_TOKEN);
 
         if (null != token) {
-            Session s = redisManager.get(token, Session.class);
+            Session s = (Session) redisManager.get(token);
 
             if (null == s || null == s.getId()) {
                 response.setHeader(SESSION_TIME_OUT_K, SESSION_TIME_OUT_V);

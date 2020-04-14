@@ -1,6 +1,7 @@
 package com.xblog.service;
 
 import com.xblog.BlogApiApplicationTests;
+import com.xblog.common.util.RedisUtils;
 import com.xblog.modules.user.entity.User;
 import com.xblog.modules.user.service.UserService;
 import org.junit.Test;
@@ -10,6 +11,8 @@ public class UserServiceTest extends BlogApiApplicationTests{
 //
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RedisUtils redisUtils;
 //
 //
 /*	List<User> findAll();
@@ -28,6 +31,16 @@ public class UserServiceTest extends BlogApiApplicationTests{
 	public void saveUserTest() {
 		User user = userService.queryUserByAccount("xsy");
 		System.out.println(user);
+	}
+
+
+	@Test
+	public void redisTest(){
+		redisUtils.set("test001","hello");
+
+		String value = (String) redisUtils.get("test001");
+
+		System.out.println(value);
 	}
 
 

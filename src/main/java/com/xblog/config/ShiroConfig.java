@@ -4,6 +4,7 @@ package com.xblog.config;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.xblog.common.util.RedisUtils;
 import com.xblog.oauth.OAuthRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -15,7 +16,6 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.xblog.common.cache.RedisManager;
 import com.xblog.oauth.OAuthSessionDAO;
 import com.xblog.oauth.OAuthSessionManager;
 
@@ -86,7 +86,7 @@ public class ShiroConfig {
 
 
     @Bean
-    public OAuthSessionDAO authSessionDAO(RedisManager redisManager) {
+    public OAuthSessionDAO authSessionDAO(RedisUtils redisManager) {
         OAuthSessionDAO authSessionDAO = new OAuthSessionDAO();
         authSessionDAO.setRedisManager(redisManager);
         return authSessionDAO;

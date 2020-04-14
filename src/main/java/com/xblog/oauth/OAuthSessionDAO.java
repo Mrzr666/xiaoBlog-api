@@ -2,6 +2,7 @@ package com.xblog.oauth;
 
 import java.io.Serializable;
 
+import com.xblog.common.util.RedisUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.ValidatingSession;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
@@ -9,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.xblog.common.cache.RedisManager;
 
 /**
  * 将session保存到redis
@@ -22,7 +22,7 @@ public class OAuthSessionDAO extends CachingSessionDAO implements InitializingBe
 
     private static Logger logger = LoggerFactory.getLogger(OAuthSessionDAO.class);
 
-    private RedisManager redisManager;
+    private RedisUtils redisManager;
 
 
     @Override
@@ -31,7 +31,7 @@ public class OAuthSessionDAO extends CachingSessionDAO implements InitializingBe
         assignSessionId(session, sessionId);
         logger.info(sessionId.toString());
 
-        redisManager.set(sessionId.toString(), session, RedisManager.DEFAULT_EXPIRE);
+        redisManager.set(sessionId.toString(), session, RedisUtils.DEFAULT_EXPIRE);
         return sessionId;
     }
 
@@ -42,27 +42,27 @@ public class OAuthSessionDAO extends CachingSessionDAO implements InitializingBe
             return; //如果会话过期/停止 没必要再更新了
         }
         logger.info(session.getId().toString());
-        redisManager.set(session.getId().toString(), session, RedisManager.DEFAULT_EXPIRE);
+        redisManager.set(session.getId().toString(), session, RedisUtils.DEFAULT_EXPIRE);
     }
 
     @Override
     protected void doDelete(Session session) {
-        redisManager.delete(session.getId().toString());
+        redisManager.del(session.getId().toString());
     }
 
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
         logger.info(sessionId.toString());
-        return redisManager.get(sessionId.toString(), Session.class);
+        return (Session) redisManager.get(sessionId.toString());
     }
 
 
-    public RedisManager getRedisManager() {
+    public RedisUtils getRedisManager() {
         return redisManager;
     }
 
-    public void setRedisManager(RedisManager redisManager) {
+    public void setRedisManager(RedisUtils redisManager) {
         this.redisManager = redisManager;
     }
 
