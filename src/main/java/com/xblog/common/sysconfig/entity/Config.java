@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -31,19 +33,19 @@ public class Config implements Serializable {
     /**
      * key
      */
-    private String key;
+    private String keyName;
 
     /**
      * value
      */
-    private String value;
+    private String valueVal;
 
     /**
      * 描述
      */
-    private String desc;
+    private String description;
 
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     private String deleted;
 

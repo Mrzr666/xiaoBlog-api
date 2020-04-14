@@ -48,10 +48,10 @@ public class OSSManage implements OSSInterface {
         return configService.queryValueByKey("endpoint");
     }
     private String getAccessKeyId(){
-        return configService.queryValueByKey("accessKeyId");
+        return configService.queryValueByKey("AccessKey");
     }
     private String getAccessKeySecret(){
-        return configService.queryValueByKey("accessKeySecret");
+        return configService.queryValueByKey("AccessKeySecret");
     }
     private String getBucketName(){
         return configService.queryValueByKey("bucketName");
