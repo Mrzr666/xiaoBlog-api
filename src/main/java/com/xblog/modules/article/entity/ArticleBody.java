@@ -32,7 +32,7 @@ public class ArticleBody implements Serializable {
 
     private String contentHtml;
 
-    private String deleted;
+    private Boolean deleted;
 
 
 }

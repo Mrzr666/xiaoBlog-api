@@ -1,12 +1,10 @@
-package com.xblog.common.sysconfig.entity;
+package com.xblog.modules.leavemessage.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import java.util.Date;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,13 +15,13 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author xsy
- * @since 2020-04-14
+ * @since 2020-04-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("me_config")
-public class Config implements Serializable {
+@TableName("me_leavemessage")
+public class Leavemessage implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -31,21 +29,16 @@ public class Config implements Serializable {
     private Integer id;
 
     /**
-     * key
+     * 留言内容
      */
-    private String keyName;
+    private String leaveMessage;
 
     /**
-     * value
+     * 星级评级
      */
-    private String valueVal;
+    private Integer stars;
 
-    /**
-     * 描述
-     */
-    private String description;
-
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     private String deleted;
 

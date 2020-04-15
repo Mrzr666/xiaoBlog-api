@@ -1,6 +1,7 @@
 package com.xblog.modules.tag.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xblog.common.result.Result;
 import com.xblog.modules.tag.entity.Tag;
 
 /**
@@ -12,5 +13,6 @@ import com.xblog.modules.tag.entity.Tag;
  * @since 2020-04-13
  */
 public interface TagService extends IService<Tag> {
+    Result queryHotTag();
 
 }

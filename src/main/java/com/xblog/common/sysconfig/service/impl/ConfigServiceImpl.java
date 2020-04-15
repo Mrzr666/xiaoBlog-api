@@ -22,10 +22,10 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
     @Override
     public String queryValueByKey(String key) {
         LambdaQueryWrapper<Config> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(Config::getKey,key);
+        wrapper.eq(Config::getKeyName,key);
         Config config = getBaseMapper().selectOne(wrapper);
         if (null != config){
-            return config.getValue();
+            return config.getValueVal();
         }
         return "";
     }

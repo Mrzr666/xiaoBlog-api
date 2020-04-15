@@ -1,5 +1,6 @@
-package com.xblog.common.sysconfig.entity;
+package com.xblog.modules.line.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,9 +8,13 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -17,13 +22,13 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author xsy
- * @since 2020-04-14
+ * @since 2020-04-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("me_config")
-public class Config implements Serializable {
+@TableName("me_line")
+public class Line implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -31,23 +36,22 @@ public class Config implements Serializable {
     private Integer id;
 
     /**
-     * key
+     * 内容
      */
-    private String keyName;
+    @NotNull
+    private String context;
 
     /**
-     * value
+     * 记录时间
      */
-    private String valueVal;
+    @NotNull
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private Date markTime;
 
-    /**
-     * 描述
-     */
-    private String description;
-
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
-    private String deleted;
+    private Boolean deleted;
 
 
 }

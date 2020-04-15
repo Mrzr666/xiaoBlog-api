@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -62,12 +63,12 @@ public class Comment implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     /**
      * 删除标记
      */
-    private String deleted;
+    private Boolean deleted;
 
 
 }

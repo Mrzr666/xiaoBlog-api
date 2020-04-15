@@ -24,6 +24,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User queryUserByAccount(String account) {
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(User::getUserName,account);
+        wrapper.eq(User::getDeleted,0);
         User user = getBaseMapper().selectOne(wrapper);
         return user;
     }

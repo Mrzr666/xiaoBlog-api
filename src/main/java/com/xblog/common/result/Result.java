@@ -44,9 +44,25 @@ public class Result implements Serializable {
         return result;
     }
 
+
+    public static Result success(String msg,Object data) {
+        Result result = new Result();
+        result.setMsg(msg);
+        result.setCode(200);
+        result.setData(data);
+        return result;
+    }
+
     public static Result error(ResultCode resultCode) {
         Result result = new Result();
         result.setResultCode(resultCode);
+        return result;
+    }
+
+    public static Result error(String msg) {
+        Result result = new Result();
+        result.setMsg(msg);
+        result.setCode(400);
         return result;
     }
 
