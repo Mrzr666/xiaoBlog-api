@@ -12,6 +12,8 @@ import com.xblog.modules.article.response.ArticlePageResponse;
 import com.xblog.modules.article.service.ArticleService;
 import com.xblog.modules.tag.entity.Tag;
 import com.xblog.modules.user.entity.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,18 +31,15 @@ import java.util.List;
  * @since 2020-04-13
  */
 @Controller
+@Api(tags = "文章接口")
 @RequestMapping("/article")
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
     @GetMapping
-    @FastJsonView(
-            exclude = {
-                    @FastJsonFilter(clazz = Article.class, props = {"body", "category", "comments"}),
-                    @FastJsonFilter(clazz = Tag.class, props = {"id", "avatar"})},
-            include = {@FastJsonFilter(clazz = User.class, props = {"nickname"})})
     @LogAnnotation(module = "文章", operation = "获取所有文章")
+    @ApiOperation("获取所有文章")
     @ResponseBody
     public Result listArticles(ArticlePageRequest articlePageRequest, PagesRequest pagesRequest) {
         System.out.println(articlePageRequest);
@@ -54,6 +53,7 @@ public class ArticleController {
     @GetMapping("/hot")
     @FastJsonView(include = {@FastJsonFilter(clazz = Article.class, props = {"id", "title"})})
     @LogAnnotation(module = "文章", operation = "获取最热文章")
+    @ApiOperation("获取最热文章")
     @ResponseBody
     public Result listHotArticles() {
         int limit = 6;
@@ -65,6 +65,7 @@ public class ArticleController {
     @GetMapping("/new")
     @FastJsonView(include = {@FastJsonFilter(clazz = Article.class, props = {"id", "title"})})
     @LogAnnotation(module = "文章", operation = "获取最新文章")
+    @ApiOperation("获取最新文章")
     @ResponseBody
     public Result listNewArticles() {
         int limit = 6;

@@ -18,6 +18,18 @@
              <result column="deleted" property="deleted"/>
              <result column="year" property="year"/>
              <result column="month" property="month"/>
+             <association property="author" javaType="com.xblog.modules.user.entity.User">
+                 <id column="muid" property="id" />
+                 <result column="user_name" property="userName" />
+                 <result column="is_admin" property="isAdmin" />
+                 <result column="avatar" property="avatar" />
+                 <result column="email" property="email" />
+                 <result column="phone" property="phone" />
+                 <result column="nick_name" property="nickName" />
+                 <result column="salt" property="salt" />
+                 <result column="status" property="status" />
+                 <result column="last_login" property="lastLogin" />
+             </association>
              <!-- 多对一关联关系 -->
              <!-- 使用association这个标签可以建立关联属性， property表示"_Order"的属性，column是通过上面定义的"ocid"别名来查询的，而javaType表示指定"customer"岁对应的属性为"_Customer" -->
              <collection  property="tags" column="id" ofType="com.xblog.modules.tag.entity.Tag">
@@ -56,13 +68,24 @@
             mt.avatar,
             mt.tag_name,
             mt.deleted tag_deleted,
-            ma.*
+            ma.*,
+            mu.id muid,
+		    mu.user_name,
+		    mu.is_admin,
+			mu.avatar,
+			mu.email,
+			mu.phone,
+			mu.nick_name,
+			mu.salt,
+			mu.status,
+			mu.last_login
         FROM
             me_article ma
-            LEFT JOIN me_article_tag mat ON ma.id = mat.article_id
-            LEFT JOIN me_tag mt ON mat.tag_id = mt.id
+            left join me_article_tag mat ON ma.id = mat.article_id
+            left join me_tag mt ON mat.tag_id = mt.id
+            left join me_user mu on ma.author_id = mu.id
         where
-            ma.deleted != '1' and mat.deleted != '1' and mt.deleted != '1'
+            ma.deleted != '1' and mat.deleted != '1' and mt.deleted != '1' and mu.deleted != '1'
     </select>
 
 </mapper>
