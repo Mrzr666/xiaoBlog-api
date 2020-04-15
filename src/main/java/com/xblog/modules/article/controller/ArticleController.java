@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class ArticleController {
                     @FastJsonFilter(clazz = Tag.class, props = {"id", "avatar"})},
             include = {@FastJsonFilter(clazz = User.class, props = {"nickname"})})
     @LogAnnotation(module = "文章", operation = "获取所有文章")
+    @ResponseBody
     public Result listArticles(ArticlePageRequest articlePageRequest, PagesRequest pagesRequest) {
         System.out.println(articlePageRequest);
 
@@ -52,6 +54,7 @@ public class ArticleController {
     @GetMapping("/hot")
     @FastJsonView(include = {@FastJsonFilter(clazz = Article.class, props = {"id", "title"})})
     @LogAnnotation(module = "文章", operation = "获取最热文章")
+    @ResponseBody
     public Result listHotArticles() {
         int limit = 6;
         List<Article> articles = articleService.queryHotArticlesList(limit);
@@ -62,6 +65,7 @@ public class ArticleController {
     @GetMapping("/new")
     @FastJsonView(include = {@FastJsonFilter(clazz = Article.class, props = {"id", "title"})})
     @LogAnnotation(module = "文章", operation = "获取最新文章")
+    @ResponseBody
     public Result listNewArticles() {
         int limit = 6;
         List<Article> articles = articleService.queryNewArticlesList(limit);
