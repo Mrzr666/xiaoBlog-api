@@ -14,10 +14,14 @@ import com.xblog.common.result.Result;
 import com.xblog.common.sysconfig.service.ConfigService;
 import com.xblog.common.util.MailUtils;
 import com.xblog.common.util.RedisUtils;
+import com.xblog.modules.line.entity.Line;
+import com.xblog.modules.line.service.LineService;
 import com.xblog.modules.user.entity.User;
 import com.xblog.modules.user.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 
 public class UserServiceTest extends BlogApiApplicationTests{
 //
@@ -27,6 +31,8 @@ public class UserServiceTest extends BlogApiApplicationTests{
 	private RedisUtils redisUtils;
 	@Autowired
 	private ConfigService configService;
+	@Autowired
+	private LineService lineService;
 //
 //
 /*	List<User> findAll();
@@ -56,6 +62,16 @@ public class UserServiceTest extends BlogApiApplicationTests{
 		String value = (String) redisUtils.get("test001");
 
 		System.out.println(value);
+	}
+
+	@Test
+	public void lineAddTest(){
+		Line line = new Line();
+		line.setContext("123213123213213421412");
+		line.setDeleted(false);
+		line.setCreatedDate(new Date());
+		line.setMarkTime(new Date());
+		lineService.createLine(line);
 	}
 
 	@Test

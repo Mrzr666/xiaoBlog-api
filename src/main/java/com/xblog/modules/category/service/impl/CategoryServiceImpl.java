@@ -26,7 +26,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public Result queryCategoryList() {
         LambdaQueryWrapper<Category> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(Category::getDeleted,0);
+        wrapper.eq(Category::getDeleted,false);
         List<Category> datas = getBaseMapper().selectList(wrapper);
         return Result.success(datas);
     }

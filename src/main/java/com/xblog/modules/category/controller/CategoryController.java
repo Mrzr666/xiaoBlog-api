@@ -24,7 +24,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping("list")
     @ResponseBody
     public Result queryCategoryList(){
         return categoryService.queryCategoryList();
