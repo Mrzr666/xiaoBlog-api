@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -32,25 +33,30 @@ public class Line implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "时间线ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 内容
      */
+    @ApiModelProperty(value = "具体内容")
     @NotNull
     private String context;
 
     /**
      * 记录时间
      */
+    @ApiModelProperty(value = "记录时间")
     @NotNull
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date markTime;
 
+    @ApiModelProperty(value = "创建时间")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
+    @ApiModelProperty(value = "是否删除")
     private Boolean deleted;
 
 
