@@ -38,7 +38,7 @@ public class ArticleTag implements Serializable {
      */
     private Integer tagId;
 
-    private String deleted;
+    private Boolean deleted;
 
 
 }

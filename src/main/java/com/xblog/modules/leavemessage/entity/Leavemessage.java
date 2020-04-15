@@ -1,14 +1,13 @@
-package com.xblog.modules.category.entity;
+package com.xblog.modules.leavemessage.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -16,13 +15,13 @@ import java.util.Date;
  * </p>
  *
  * @author xsy
- * @since 2020-04-13
+ * @since 2020-04-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("me_category")
-public class Category implements Serializable {
+@TableName("me_leavemessage")
+public class Leavemessage implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -30,23 +29,18 @@ public class Category implements Serializable {
     private Integer id;
 
     /**
-     * 图片
+     * 留言内容
      */
-    private String avatar;
+    private String leaveMessage;
 
     /**
-     * 分类名
+     * 星级评级
      */
-    private String categoryName;
+    private Integer stars;
 
-    /**
-     * 描述
-     */
-    private String description;
+    private LocalDateTime createdDate;
 
-    private Date createdDate;
-
-    private Boolean deleted;
+    private String deleted;
 
 
 }

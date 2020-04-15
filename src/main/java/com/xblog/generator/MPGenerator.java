@@ -46,11 +46,11 @@ public class MPGenerator {
         sc.setNaming(NamingStrategy.underline_to_camel); //表名生成策略
         sc.setEntityBuilderModel(true);
         sc.setEntityLombokModel(true);
-        sc.setInclude("me_leavemessage");
+        sc.setInclude("me_line");
         mpg.setStrategy(sc);
         //包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.xblog.modules.leavemessage");
+        pc.setParent("com.xblog.modules.line");
         pc.setEntity("entity");
         pc.setController("controller");
         pc.setService("service");

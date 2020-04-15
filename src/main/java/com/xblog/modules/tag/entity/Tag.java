@@ -38,7 +38,7 @@ public class Tag implements Serializable {
      */
     private String tagName;
 
-    private String deleted;
+    private Boolean deleted;
 
 
 }
