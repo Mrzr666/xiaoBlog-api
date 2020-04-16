@@ -54,7 +54,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<ArticlePageResponse> queryArticlesList(ArticlePageRequest articlePageRequest, PagesRequest pagesRequest) {
         IPage<ArticlePageResponse> page = new Page<>(pagesRequest.getPageNumber(), pagesRequest.getPageSize());
-        List<ArticlePageResponse> articlePageResponseList = articleMapper.queryArticlesList(articlePageRequest,page);
+        List<ArticlePageResponse> articlePageResponseList = articleMapper.queryArticlesList(page,articlePageRequest);
         return articlePageResponseList;
     }
 }
