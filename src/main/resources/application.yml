@@ -6,7 +6,6 @@ server:
 
 #upload
 spring:
-<<<<<<< HEAD
   profiles:
     active: zr
   http:
@@ -15,9 +14,6 @@ spring:
       maxRequestSize: 30Mb
   mvc:
     static-path-pattern: /**
-=======
-
->>>>>>> develop
 #  resources:
 #    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
 #    classpath: /static/,classpath:/public/,file:${me.upload.path}
