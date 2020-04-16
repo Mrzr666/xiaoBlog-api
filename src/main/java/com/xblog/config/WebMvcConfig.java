@@ -14,23 +14,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson.support.spring.FastJsonViewResponseBodyAdvice;
-import com.xblog.common.interceptor.ClearTokenInteceptor;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-
-        registry.addInterceptor(clearTokenInteceptor()).addPathPatterns("/**");
-    }
-
-    @Bean
-    public ClearTokenInteceptor clearTokenInteceptor() {
-        ClearTokenInteceptor clearTokenInteceptor = new ClearTokenInteceptor();
-        return clearTokenInteceptor;
-    }
 
 
     @Override
