@@ -26,6 +26,7 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
+
     @Autowired
     private ArticleMapper articleMapper;
 
@@ -62,4 +63,5 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public Result queryArchivesList() {
         return Result.success(articleMapper.queryArchivesList());
     }
+
 }

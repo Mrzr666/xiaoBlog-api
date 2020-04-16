@@ -1,101 +1,176 @@
 package com.xblog.config;
 
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.xblog.common.util.RedisUtils;
-import com.xblog.oauth.OAuthRealm;
+import com.xblog.common.shiro.MySessionManager;
+import com.xblog.common.shiro.MyShiroRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.xblog.oauth.OAuthSessionDAO;
-import com.xblog.oauth.OAuthSessionManager;
+import java.time.Duration;
+import java.util.*;
 
 @Configuration
 public class ShiroConfig {
 
+    private String host = "127.0.0.1";
+    private int port = 6379;
+    private String password = "";
+    private Duration timeout = Duration.ofSeconds(10000);
+
+    /**
+     * Filter工厂，设置对应的过滤条件和跳转条件
+     */
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-       /* filterChainDefinitionMap.put("/", "anon");
+        // 过滤器链定义映射
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
-        filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/blogFile/**", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/register", "anon");
-        filterChainDefinitionMap.put("/**", "authc"); */
+        /*
+         * anon:所有url都都可以匿名访问，authc:所有url都必须认证通过才可以访问;
+         * 过滤链定义，从上向下顺序执行，authc 应放在 anon 下面
+         * */
+        filterChainDefinitionMap.put("/pass/**", "anon");
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/fonts/**", "anon");
+        filterChainDefinitionMap.put("/img/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/html/**", "anon");
+        // 所有url都必须认证通过才可以访问
+        filterChainDefinitionMap.put("/**", "authc");
 
-        //filterChainDefinitionMap.put("/**/create", "authc");
-        //filterChainDefinitionMap.put("/**/update", "authc");
-        //filterChainDefinitionMap.put("/**/delete", "authc");
-        //filterChainDefinitionMap.put("/upload", "authc");
-        //filterChainDefinitionMap.put("/users/currentUser", "authc");
+        // 配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了, 位置放在 anon、authc下面
+        filterChainDefinitionMap.put("/logout", "logout");
 
-        filterChainDefinitionMap.put("/**", "anon");
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        // 配器shirot认登录累面地址，前后端分离中登录累面跳转应由前端路由控制，后台仅返回json数据, 对应LoginController中unauth请求
+        shiroFilterFactoryBean.setLoginUrl("/un_auth");
 
-        //返回json数据，由前端跳转
-        shiroFilterFactoryBean.setLoginUrl("/handleLogin");
+        // 登录成功后要跳转的链接, 此项目是前后端分离，故此行注释掉，登录成功之后返回用户基本信息及token给前端
+        // shiroFilterFactoryBean.setSuccessUrl("/index");
 
+        // 未授权界面, 对应LoginController中 unauthorized 请求
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
+
+    /**
+     * 凭证匹配器
+     */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        // 散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        hashedCredentialsMatcher.setHashIterations(2);
+        // 散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(5);
         return hashedCredentialsMatcher;
     }
 
+    /**
+     * 自定义验证
+     */
     @Bean
-    public OAuthRealm oAuthRealm() {
-        OAuthRealm myShiroRealm = new OAuthRealm();
+    public MyShiroRealm myShiroRealm() {
+        MyShiroRealm myShiroRealm = new MyShiroRealm();
         myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return myShiroRealm;
     }
 
-
+    /**
+     * RedisSessionDAO shiro sessionDao层的实现 shiro-redis
+     */
     @Bean
-    public SecurityManager securityManager(OAuthRealm oAuthRealm, SessionManager sessionManager) {
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        redisSessionDAO.setSessionIdGenerator(sessionIdGenerator());
+        redisSessionDAO.setExpire(1800);
+        return redisSessionDAO;
+    }
+
+
+    /**
+     * Session ID 生成器
+     */
+    @Bean
+    public JavaUuidSessionIdGenerator sessionIdGenerator() {
+        return new JavaUuidSessionIdGenerator();
+    }
+
+    /**
+     * 自定义sessionManager
+     */
+    @Bean
+    public SessionManager sessionManager() {
+        MySessionManager mySessionManager = new MySessionManager();
+        mySessionManager.setSessionDAO(redisSessionDAO());
+        return mySessionManager;
+    }
+
+    /**
+     * 配置shiro redisManager
+     */
+    private RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost(host);
+        redisManager.setPort(port);
+        redisManager.setTimeout((int) timeout.toMillis());
+        redisManager.setPassword(password);
+        return redisManager;
+    }
+
+    /**
+     * cacheManager 缓存 redis实现
+     */
+    @Bean
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        // 必须要设置主键名称，shiro-redis 插件用过这个缓存用户信息
+        redisCacheManager.setPrincipalIdFieldName("userId");
+        return redisCacheManager;
+    }
+
+    /**
+     * 权限管理，配置主要是Realm的管理认证
+     */
+    @Bean
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(oAuthRealm);
-        securityManager.setSessionManager(sessionManager);
+        securityManager.setRealm(myShiroRealm());
+        // 自定义session管理 使用redis
+        securityManager.setSessionManager(sessionManager());
         // 自定义缓存实现 使用redis
-        //securityManager.setCacheManager(cacheManager());
+        securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
+    /*
+     * 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
+     * 配置以下两个bean(DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor)即可实现此功能
+     */
     @Bean
-    public SessionManager sessionManager(OAuthSessionDAO authSessionDAO) {
-        OAuthSessionManager oAuthSessionManager = new OAuthSessionManager();
-        oAuthSessionManager.setSessionDAO(authSessionDAO);
-        return oAuthSessionManager;
-    }
-
-
-    @Bean
-    public OAuthSessionDAO authSessionDAO(RedisUtils redisManager) {
-        OAuthSessionDAO authSessionDAO = new OAuthSessionDAO();
-        authSessionDAO.setRedisManager(redisManager);
-        return authSessionDAO;
-    }
-
-
-    @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
     }
 
     @Bean
@@ -103,6 +178,16 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public SimpleCookie cookie() {
+        // cookie的name,对应的默认是 JSESSIONID
+        SimpleCookie cookie = new SimpleCookie("SHARE_JSESSIONID");
+        cookie.setHttpOnly(true);
+        //  path为 / 用于多个系统共享 JSESSIONID
+        cookie.setPath("/");
+        return cookie;
     }
 
 }
