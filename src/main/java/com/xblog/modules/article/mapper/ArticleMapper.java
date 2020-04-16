@@ -23,6 +23,6 @@ import java.util.List;
 @Repository
 public interface ArticleMapper extends BaseMapper<Article> {
 
-    List<ArticlePageResponse> queryArticlesList(IPage<ArticlePageResponse> page,ArticlePageRequest articlePageRequest);
+    List<ArticlePageResponse> queryArticlesList(ArticlePageRequest articlePageRequest);
 
 }

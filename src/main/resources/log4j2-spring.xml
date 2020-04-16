@@ -69,6 +69,12 @@
 
     	 <!-- 第三方日志系统 -->
         <!-- <logger name="org.springframework" level="info"/> -->
+        <logger name="com.xblog.modules" level="TRACE">
+            <appender-ref ref="console" />
+        </logger>
+        <logger name="org.mybatis" level="TRACE">
+            <appender-ref ref="console" />
+        </logger>
 
         <!-- 配置日志的根节点 -->
         <root level="info">

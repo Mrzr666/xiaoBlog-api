@@ -23,4 +23,30 @@ public class ArticlePageRequest extends Article implements Serializable {
     private Integer categoryId;
 
     private Integer count;
+
+    private String name;
+
+    private String sort;
+
+    /**
+     * 每页显示大小
+     */
+    private Integer  pageSize;
+
+    /**
+     * 当前页码
+     */
+    private  Integer pageNumber;
+
+    /**
+     * 最大页数
+     */
+    private  Integer maxCurrent;
+
+    private Integer offset;
+
+    /**
+     * 数据总条数
+     */
+    private  Integer total;
 }

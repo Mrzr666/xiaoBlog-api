@@ -7,11 +7,8 @@ import com.xblog.common.annotation.LogAnnotation;
 import com.xblog.common.result.Result;
 import com.xblog.modules.article.request.ArticlePageRequest;
 import com.xblog.modules.article.entity.Article;
-import com.xblog.modules.article.request.PagesRequest;
 import com.xblog.modules.article.response.ArticlePageResponse;
 import com.xblog.modules.article.service.ArticleService;
-import com.xblog.modules.tag.entity.Tag;
-import com.xblog.modules.user.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +38,8 @@ public class ArticleController {
     @LogAnnotation(module = "文章", operation = "获取所有文章")
     @ApiOperation("获取所有文章")
     @ResponseBody
-    public Result listArticles(ArticlePageRequest articlePageRequest, PagesRequest pagesRequest) {
-        System.out.println(articlePageRequest);
-
-        System.out.println(pagesRequest);
-        List<ArticlePageResponse> articles = articleService.queryArticlesList(articlePageRequest, pagesRequest);
+    public Result listArticles(ArticlePageRequest articlePageRequest) {
+        List<ArticlePageResponse> articles = articleService.queryArticlesList(articlePageRequest);
         return Result.success(articles);
     }
 
@@ -72,5 +66,16 @@ public class ArticleController {
         List<Article> articles = articleService.queryNewArticlesList(limit);
         return Result.success(articles);
     }
+
+
+    @GetMapping("/listArchives")
+    @LogAnnotation(module = "文章", operation = "获取文章归档日期")
+    @ApiOperation("获取文章归档日期")
+    @ResponseBody
+    public Result listArchives() {
+        return articleService.queryArchivesList();
+    }
+
+
 }
 

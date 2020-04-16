@@ -1,16 +1,12 @@
 package com.xblog.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xblog.BlogApiApplicationTests;
 import com.xblog.modules.article.entity.Article;
 import com.xblog.modules.article.request.ArticlePageRequest;
-import com.xblog.modules.article.request.PagesRequest;
 import com.xblog.modules.article.response.ArticlePageResponse;
 import com.xblog.modules.article.service.ArticleService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -33,10 +29,7 @@ public class ArticleServiceTest extends BlogApiApplicationTests{
 	@Test
 	public void queryArticlesListTest(){
 		ArticlePageRequest articlePageRequest = new ArticlePageRequest();
-		PagesRequest pagesRequest = new PagesRequest();
-		pagesRequest.setPageSize(10);
-		pagesRequest.setPageNumber(1);
-		List<ArticlePageResponse> as = articleService.queryArticlesList(articlePageRequest,pagesRequest);
+		List<ArticlePageResponse> as = articleService.queryArticlesList(articlePageRequest);
 		System.out.println(as);
 	}
 //

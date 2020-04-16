@@ -60,7 +60,7 @@
     <sql id="Base_Column_List">
         id, title, summary, comment_counts, view_counts, weight, author_id, body_id, category_id, created_date, deleted
     </sql>
-    <select id="queryArticlesList" resultMap="articlePageResponse" >
+    <select id="queryArticlesList" resultMap="articlePageResponse" parameterType="com.xblog.modules.article.request.ArticlePageRequest" >
         SELECT DISTINCT
             year(ma.created_date) year,
             month(ma.created_date) month,
@@ -80,7 +80,15 @@
 			mu.status,
 			mu.last_login
         FROM
-            me_article ma
+            (
+            SELECT
+            <include refid="Base_Column_List"></include>
+            FROM
+                me_article a
+                order by
+                ${name} ${sort}
+                LIMIT ${pageSize} OFFSET ${offset}
+                ) ma
             left join me_article_tag mat ON ma.id = mat.article_id
             left join me_tag mt ON mat.tag_id = mt.id
             left join me_user mu on ma.author_id = mu.id
