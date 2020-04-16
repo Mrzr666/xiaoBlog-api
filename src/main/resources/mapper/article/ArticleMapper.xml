@@ -96,4 +96,8 @@
             ma.deleted != '1' and mat.deleted != '1' and mt.deleted != '1' and mu.deleted != '1'
     </select>
 
+    <select id="queryArchivesList" resultType="com.xblog.modules.article.response.ArticlePageResponse">
+        select year(created_date) as year,month(created_date) as month,count(1) as count from me_article group by year(created_date),month(created_date)
+    </select>
+
 </mapper>

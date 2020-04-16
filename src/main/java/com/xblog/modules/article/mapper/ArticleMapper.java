@@ -25,4 +25,5 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     List<ArticlePageResponse> queryArticlesList(ArticlePageRequest articlePageRequest);
 
+    List<ArticlePageResponse> queryArchivesList();
 }

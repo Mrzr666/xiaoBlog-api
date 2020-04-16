@@ -60,6 +60,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public Result queryArchivesList() {
-        return null;
+        return Result.success(articleMapper.queryArchivesList());
     }
 }

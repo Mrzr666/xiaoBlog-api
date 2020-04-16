@@ -17,6 +17,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class ArticlePageResponse extends Article {
 
+
     private List<Tag> tags;
 
     private List<Comment> comments;
@@ -30,4 +31,6 @@ public class ArticlePageResponse extends Article {
     private Integer year;
 
     private Integer month;
+
+    private Integer count;
 }
